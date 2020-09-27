@@ -9,8 +9,7 @@ cc_binary(
     deps = [":static_vector_lib"]
 )
 
-
-cc_binary(
+cc_test(
     name = "test",
     srcs = ["test.cpp"],
     deps = [
