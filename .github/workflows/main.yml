@@ -37,11 +37,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Figure out where we are
-        run: |
-          pwd
-          ls -la
-
       - name: Build all targets
         run: bazel build //...
 
