@@ -4,7 +4,7 @@
 /**
  * @brief Perform operations on polynomials of arbitrary degree
  * 
- * @tparam N - Length of coefficient array (degree + 1)
+ * @tparam N Length of coefficient array (degree + 1)
  */
 template <std::size_t N>
 class Polynomial
@@ -17,8 +17,12 @@ public:
 
     constexpr Polynomial(CoeffsType coeffs) : coeffs_{coeffs} {}
 
+    template <typename... Ts>
+    constexpr Polynomial(Ts... coeffs) : coeffs_{coeffs...} {}
+
     // constexpr Polynomial(std::initializer_list<ValueType> coeffs)
     // {
+    //     /// TODO: Assert initializer_list size as static_assert won't work here
     //     static_assert(coeffs.size() == N, "Initializer list length doesn't match N");
 
     //     std::copy(coeffs.begin(), coeffs.end(), coeffs_.begin());
@@ -38,16 +42,16 @@ private:
     /**
      * @brief Use recursive Horner's method to evaluate polynomial at compile time
      * 
-     * @tparam i - Coefficient index at current recursion depth
-     * @param  x - Value at which the polynomial is evaluated
+     * @tparam i Coefficient index at current recursion depth
+     * @param  x Value at which the polynomial is evaluated
      * @return constexpr ValueType 
      */
     template <std::size_t i>
-    constexpr ValueType evaluateImpl(ValueType x) const noexcept
+    constexpr ValueType evaluateImpl([[maybe_unused]] ValueType x) const noexcept
     {
         if constexpr (i == 0U)
         {
-            /// TODO: Fix warning: parameter 'x' set but not used [-Wunused-but-set-parameter]
+            // Warning "parameter 'x' set but not used" in this branch is suppressed by using [[maybe_unused]] above
             return coeffs_[i];
         }
         else
@@ -56,5 +60,9 @@ private:
         }
     }
 
+    /**
+     * @brief Array holding the polynomial coefficients in decreasing-degree order
+     * 
+     */
     CoeffsType coeffs_;
 };
