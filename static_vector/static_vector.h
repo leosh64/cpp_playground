@@ -1,23 +1,24 @@
+#include <algorithm>
 #include <array>
 #include <cstddef>
 #include <exception>
 #include <initializer_list>
-#include <algorithm>
 
 template <typename T, std::size_t capacity_>
 class StaticVector
 {
 
 public:
-    StaticVector() : size_(0) {}
-    StaticVector(std::initializer_list<T> list) : size_(list.size())
+    constexpr StaticVector() : size_(0) {}
+    StaticVector(std::initializer_list<T> list)
     {
-        if (list.size() > size_)
+        if (list.size() > capacity_)
         {
             throw std::bad_array_new_length();
         }
-        std::size_t counter = 0;
-        std::for_each(list.begin(), list.end(), [&](T element) { data_[counter] = element; ++counter; });
+
+        std::copy(std::cbegin(list), std::cend(list), std::begin(data_));
+        size_ = list.size();
     }
 
     void push_back(const T &element)
@@ -45,7 +46,7 @@ public:
         }
     }
 
-    T &operator[](const std::size_t index)
+    T &at(const std::size_t index)
     {
         if (index > size_)
         {
@@ -54,22 +55,41 @@ public:
         return data_[index];
     }
 
-    std::size_t size() const
+    const T &at(const std::size_t index) const
+    {
+        if (index > size_)
+        {
+            throw std::out_of_range("out of range");
+        }
+        return data_[index];
+    }
+
+    T &operator[](const std::size_t index)
+    {
+        return data_[index];
+    }
+
+    const T &operator[](const std::size_t index) const
+    {
+        return data_[index];
+    }
+
+    constexpr std::size_t size() const noexcept
     {
         return size_;
     }
 
-    std::size_t capacity() const
+    constexpr std::size_t capacity() const noexcept
     {
         return capacity_;
     }
 
-    bool empty() const
+    constexpr bool empty() const noexcept
     {
         return size_ == 0;
     }
 
-    void clear()
+    void clear() noexcept
     {
         size_ = 0;
     }
