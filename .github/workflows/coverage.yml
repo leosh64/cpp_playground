@@ -1,0 +1,43 @@
+# This is a basic workflow that is manually triggered
+
+name: Manual workflow
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "greet"
+  test-coverage:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+      - name: Install Bazelisk
+        uses: tullyliu/bazelisk-action@1.2
+        with:
+          # [required]
+          # Version of Bazelisk we would like to install, defaults to 1.5.0
+          version: '1.5.0'
+          # [required]
+          # Install path for Bazelisk binaries, defaults to ./.local/bin
+          bazel-install-path: './.local/bin'
+          # [required]
+          # The OS of the system that wishes to install Bazelisk. Can be 'darwin' or 'linux'
+          os: 'linux'
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        
+      - name: Install lcov
+        run: apt install lcov
+        
+      - name: Generate coverage report
+        run: bazel coverage  //...
+      
+      - name: Generate HTML report
+        run: genhtml bazel-out/_coverage/_coverage_report.dat --output-directory coverage
