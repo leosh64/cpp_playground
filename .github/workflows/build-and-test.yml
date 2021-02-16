@@ -1,0 +1,30 @@
+name: Build and Test
+
+# Triggers the workflow on push or pull request events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-and-test-all-targets:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Install Bazelisk
+        uses: tullyliu/bazelisk-action@1.2
+        with:
+          version: '1.5.0'
+          bazel-install-path: './.local/bin'
+          os: 'linux'
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build all targets
+        run: bazel build //...
+
+      - name: Test all targets
+        run: bazel test //...
