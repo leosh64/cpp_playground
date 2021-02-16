@@ -1,6 +1,9 @@
 #include "static_vector.h"
 #include "gtest/gtest.h"
 
+#include <string>
+#include <utility>
+
 TEST(StaticVectorTest, WhenUsingDefaultConstructor_SizeAndCapacityAreCorrect)
 {
     const std::size_t cap = 10;
@@ -130,3 +133,39 @@ TEST(StaticVectorTest, WhenCallingClear_VectorIsEmptyAndElementsCanBeAddedAgain)
     EXPECT_EQ(vec[1], 5);
     EXPECT_EQ(vec[2], 6);
 }
+
+TEST(StaticVectorTest, WhenCallingEmplaceBack_NewElementsAreConstructedInBack)
+{
+    StaticVector<std::pair<int, std::string>, 10> vec{{1, "a"}, {2, "b"}};
+
+    vec.emplace_back(3, "c");
+
+    EXPECT_EQ(vec.size(), 3);
+    EXPECT_EQ(vec[0].first, 1);
+    EXPECT_EQ(vec[0].second, "a");
+    EXPECT_EQ(vec[2].first, 3);
+    EXPECT_EQ(vec[2].second, "c");
+}
+
+TEST(StaticVectorTest, WhenUsingConstexprDefaultConstructor_ContainerIsUsableAndEmpty)
+{
+    constexpr StaticVector<int, 10> vec;
+
+    constexpr auto capacity = vec.capacity();
+    constexpr auto size = vec.size();
+
+    EXPECT_EQ(capacity, 10);
+    EXPECT_EQ(size, 0);
+}
+
+// TEST(StaticVectorTest, WhenUsingConstexprValueConstructor_ContainerIsUsableAndFilled)
+// {
+//     /// TODO: Needs C++20 for constexpr std::copy (currently not supported by GCC9)
+//     constexpr StaticVector<int, 10> vec{1, 2, 3};
+
+//     EXPECT_EQ(vec.capacity(), 10);
+//     EXPECT_EQ(vec.size(), 3);
+//     EXPECT_EQ(vec[0], 1);
+//     EXPECT_EQ(vec[1], 2);
+//     EXPECT_EQ(vec[2], 3);
+// }
