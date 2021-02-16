@@ -41,3 +41,9 @@ jobs:
       
       - name: Generate HTML report
         run: genhtml bazel-out/_coverage/_coverage_report.dat --output-directory coverage
+
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage-report
+          path: coverage/**
