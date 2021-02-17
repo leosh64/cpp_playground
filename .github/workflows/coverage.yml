@@ -1,0 +1,36 @@
+name: Generate Code Coverage Report
+
+# Manually triggered job (via UI or API)
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-code-coverage-report:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Install Bazelisk
+        uses: tullyliu/bazelisk-action@1.2
+        with:
+          version: '1.5.0'
+          bazel-install-path: './.local/bin'
+          os: 'linux'
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Install lcov
+        run: sudo apt install lcov
+        
+      - name: Generate code coverage report
+        run: bazel coverage  //...
+      
+      - name: Generate HTML report
+        run: genhtml bazel-out/_coverage/_coverage_report.dat --output-directory coverage
+
+      - name: Archive code coverage results (upload artifact)
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage-report
+          path: coverage/**

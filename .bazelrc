@@ -1,7 +1,11 @@
-# Set C++ standard to C++14
-build --cxxopt="-std=c++14"
+# Set C++ standard to C++17
+build --cxxopt="-std=c++17"
+
+# Specify usage of remote java JDK instead of locally-installed version
+build --javabase=@bazel_tools//tools/jdk:remote_jdk11
 
 # Use colored g++ error messages
 build --copt=-fdiagnostics-color=always
-run --copt=-fdiagnostics-color=always
-test --copt=-fdiagnostics-color=always
+
+# Combine results of different targets into single _coverage_report.dat file
+coverage --combined_report=lcov 

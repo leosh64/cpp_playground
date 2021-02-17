@@ -1,19 +1,19 @@
 cc_library(
-    name = "static_vector_lib",
-    hdrs = ["static_vector.h"],
+    name = "lib",
+    hdrs = ["polynomial.h"],
 )
 
 cc_binary(
     name = "main",
     srcs = ["main.cpp"],
-    deps = [":static_vector_lib"],
+    deps = [":lib"],
 )
 
 cc_test(
     name = "test",
     srcs = ["test.cpp"],
     deps = [
-        ":static_vector_lib",
+        ":lib",
         "@gtest",
         "@gtest//:gtest_main",
     ],

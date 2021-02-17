@@ -1,75 +1,108 @@
+#include <algorithm>
 #include <array>
 #include <cstddef>
 #include <exception>
 #include <initializer_list>
-#include <algorithm>
 
 template <typename T, std::size_t capacity_>
 class StaticVector
 {
 
 public:
-    StaticVector() : size_(0) {}
-    StaticVector(std::initializer_list<T> list) : size_(list.size())
+    // types
+    using value_type = T;
+    using reference = value_type &;
+    using const_reference = const value_type &;
+
+    constexpr StaticVector() noexcept : data_{}, size_(0U) {}
+    constexpr StaticVector(std::initializer_list<T> list) : data_{}, size_(list.size())
     {
-        if (list.size() > size_)
+        if (list.size() > capacity_)
         {
             throw std::bad_array_new_length();
         }
-        std::size_t counter = 0;
-        std::for_each(list.begin(), list.end(), [&](T element) { data_[counter] = element; ++counter; });
+
+        std::copy(std::cbegin(list), std::cend(list), std::begin(data_));
     }
 
-    void push_back(const T &element)
+    constexpr void push_back(const T &element)
     {
-        if (size_ < capacity_)
-        {
-            data_[size_] = element;
-            ++size_;
-        }
-        else
+        if (size_ >= capacity_)
         {
             throw std::bad_array_new_length();
         }
+
+        data_[size_] = element;
+        ++size_;
     }
 
-    void pop_back()
+    template <class... Args>
+    constexpr reference emplace_back(Args &&...args)
     {
-        if (size_ > 0)
+        if (size_ >= capacity_)
         {
-            --size_;
+            throw std::bad_array_new_length();
         }
-        else
+
+        return data_[size_++] = T(std::forward<Args>(args)...);
+    }
+
+    constexpr void pop_back()
+    {
+        if (size_ <= 0)
         {
             throw std::out_of_range("container empty");
         }
+
+        --size_;
     }
 
-    T &operator[](const std::size_t index)
+    constexpr reference at(const std::size_t index)
     {
         if (index > size_)
         {
             throw std::out_of_range("out of range");
         }
+
         return data_[index];
     }
 
-    std::size_t size() const
+    constexpr const_reference at(const std::size_t index) const
+    {
+        if (index > size_)
+        {
+            throw std::out_of_range("out of range");
+        }
+
+        return data_[index];
+    }
+
+    constexpr reference operator[](const std::size_t index)
+    {
+        return data_[index];
+    }
+
+    constexpr const_reference operator[](const std::size_t index) const
+    {
+        return data_[index];
+    }
+
+    constexpr std::size_t size() const noexcept
     {
         return size_;
     }
 
-    std::size_t capacity() const
+    constexpr std::size_t capacity() const noexcept
     {
         return capacity_;
     }
 
-    bool empty() const
+    constexpr bool empty() const noexcept
     {
         return size_ == 0;
     }
 
-    void clear()
+    constexpr void clear() noexcept
     {
         size_ = 0;
     }
