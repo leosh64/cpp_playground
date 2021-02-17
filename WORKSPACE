@@ -53,3 +53,9 @@ http_archive(
     strip_prefix = "buildtools-master",
     url = "https://github.com/bazelbuild/buildtools/archive/master.zip",
 )
+
+git_repository(
+    name = "googlebenchmark",
+    remote = "https://github.com/google/benchmark",
+    tag = "v1.5.2",
+)
