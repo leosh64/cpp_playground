@@ -1,6 +1,7 @@
 cc_library(
     name = "lib",
     hdrs = ["max_element.h"],
+    linkopts = ["-pthread"],  # required for std::async with gcc on linux, adjust for other platforms!
 )
 
 cc_library(
@@ -33,7 +34,6 @@ cc_test(
     deps = [
         ":lib",
         ":utils",
-        "@gtest",
         "@gtest//:gtest_main",
     ],
 )

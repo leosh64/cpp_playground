@@ -1,18 +1,25 @@
 #include "data_generator.h"
 #include "max_element.h"
 #include <iostream>
-#include <memory>
+#include <vector>
 
 int main()
 {
     auto data = RandomIntegerArrayGenerator<1000000U>::getInstance().getData();
 
-    std::unique_ptr<IMaxElement<>> impl_p = std::make_unique<StandardLibraryMaxElement<>>();
+    using iterator_t = decltype(std::cbegin(data));
+    using fcn_type = decltype(&max_element_homebrew<iterator_t>);
 
-    const auto max_element = impl_p->Get(data);
-    const auto max_value = *max_element;
+    // List of functions to be tested
+    std::vector<fcn_type> funcs{std::max_element<iterator_t>, max_element_homebrew<iterator_t>, max_element_parallel<iterator_t>, max_element_divide_and_conquer<iterator_t>};
 
-    std::cout << "Max: " << max_value << std::endl;
+    for (auto func : funcs)
+    {
+        const auto max_element = func(std::cbegin(data), std::cend(data));
+        const auto max_value = *max_element;
+
+        std::cout << "Max: " << max_value << std::endl;
+    }
 
     return 0;
 }

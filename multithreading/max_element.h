@@ -1,60 +1,29 @@
 #include <algorithm>
 #include <future>
-#include <vector>
 
-template <typename ContainerType = std::vector<int>>
-class IMaxElement
-{
-public:
-    virtual typename ContainerType::const_iterator Get(const ContainerType &data) const = 0;
-};
+/// For reference: std::max_element has the following signature
+// template<class ForwardIt>
+// ForwardIt std::max_element(ForwardIt first, ForwardIt last)
 
-template <typename ContainerType = std::vector<int>>
-class StandardLibraryMaxElement : public IMaxElement<ContainerType>
+template <typename ForwardIt>
+ForwardIt max_element_homebrew(ForwardIt begin, ForwardIt end)
 {
-public:
-    typename ContainerType::const_iterator Get(const ContainerType &data) const override
+    if (begin == end)
+        return end;
+
+    auto max_it = begin;
+    for (auto it = ++begin; it != end; ++it)
     {
-        return std::max_element(std::cbegin(data), std::cend(data));
-    }
-};
-
-template <typename ContainerType = std::vector<int>>
-class HomebrewMaxElement : public IMaxElement<ContainerType>
-{
-public:
-    typename ContainerType::const_iterator Get(const ContainerType &data) const override
-    {
-        auto max_it = std::cbegin(data);
-        for (auto it = std::cbegin(data) + 1; it != data.end(); ++it)
+        if (*it > *max_it)
         {
-            if (*it > *max_it)
-            {
-                max_it = it;
-            }
+            max_it = it;
         }
-        return max_it;
     }
-};
-
-// template <typename RandomIt>
-// RandomIt parallel_max(RandomIt beg, RandomIt end)
-// {
-//     auto len = end - beg;
-//     if (len < 1000)
-//         return std::max_element(beg, end);
-
-//     RandomIt mid = beg + len / 2;
-//     auto right_handle = std::async(std::launch::async,
-//                                    parallel_max<RandomIt>, mid, end);
-//     auto left = parallel_max(beg, mid);
-//     auto right = right_handle.get();
-
-//     return *left > *right ? left : right;
-// }
+    return max_it;
+}
 
 template <typename RandomIt>
-RandomIt dual_parallel_max(RandomIt begin, RandomIt end)
+RandomIt max_element_parallel(RandomIt begin, RandomIt end)
 {
     auto len = end - begin;
 
@@ -71,12 +40,20 @@ RandomIt dual_parallel_max(RandomIt begin, RandomIt end)
     return *left > *right ? left : right;
 }
 
-template <typename ContainerType = std::vector<int>>
-class ParallelMaxElement : public IMaxElement<ContainerType>
+template <typename RandomIt>
+RandomIt max_element_divide_and_conquer(RandomIt begin, RandomIt end)
 {
-public:
-    typename ContainerType::const_iterator Get(const ContainerType &data) const override
-    {
-        return dual_parallel_max(std::cbegin(data), std::cend(data));
-    }
-};
+    if (begin == end)
+        return end;
+    if (begin + 1 == end)
+        return begin;
+
+    auto len = end - begin;
+
+    RandomIt mid = begin + len / 2;
+
+    auto left = max_element_divide_and_conquer(begin, mid);
+    auto right = max_element_divide_and_conquer(mid, end);
+
+    return *left > *right ? left : right;
+}
