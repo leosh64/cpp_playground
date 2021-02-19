@@ -17,7 +17,7 @@ TEST(RandomIntegerArrayGeneratorTest, WhenCallingGetData_DataContainerIsReturned
 
 /// TODO: Avoid specifying here, use either from data_generator or via decltype
 using iterator_t = std::vector<int>::const_iterator;
-using function_t = decltype(&max_element_homebrew<iterator_t>);
+using function_t = std::function<iterator_t(iterator_t, iterator_t)>;
 
 class MaxElementTestSuite : public testing::TestWithParam<function_t>
 {
