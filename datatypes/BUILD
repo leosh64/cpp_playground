@@ -47,7 +47,6 @@ cc_test(
     ],
 )
 
-
 cc_library(
     name = "polynomial",
     hdrs = ["polynomial.h"],
