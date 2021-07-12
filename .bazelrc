@@ -1,6 +1,11 @@
 # Set C++ standard to C++17
 build --cxxopt="-std=c++17"
 
+# Set strict warnings
+build --cxxopt="-pedantic"
+build --cxxopt="-Wall"
+build --cxxopt="-Wextra"
+
 # Specify usage of remote java JDK instead of locally-installed version
 build --javabase=@bazel_tools//tools/jdk:remote_jdk11
 

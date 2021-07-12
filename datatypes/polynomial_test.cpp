@@ -1,4 +1,4 @@
-#include "polynomial.h"
+#include "datatypes/polynomial.h"
 #include "gtest/gtest.h"
 
 TEST(PolynomialTest, ConstructWithArray)

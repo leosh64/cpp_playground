@@ -1,6 +1,9 @@
 #include <array>
 #include <initializer_list>
 
+#ifndef DATATYPES_POLYNOMIAL_H
+#define DATATYPES_POLYNOMIAL_H
+
 /**
  * @brief Perform operations on polynomials of arbitrary degree
  * 
@@ -66,3 +69,5 @@ private:
      */
     CoeffsType coeffs_;
 };
+
+#endif // DATATYPES_POLYNOMIAL_H

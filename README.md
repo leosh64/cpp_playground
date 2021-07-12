@@ -13,7 +13,7 @@ bazel build //...
 ```
 
 ```sh
-bazel run //static_vector:main
+bazel run //apps/compiletime_polynomial:main
 ```
 
 ```sh
