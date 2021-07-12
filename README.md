@@ -20,10 +20,18 @@ bazel run //apps/compiletime_polynomial:main
 bazel test //...
 ```
 
-### bazelisk
+### Bazelisk
 
 Using `bazelisk` allows to automatically download & execute the correct version of `bazel`, as pinned in the `.bazelversion` file. To install `bazelisk`, follow
 the instructions on https://docs.bazel.build/versions/master/install-bazelisk.html.
+
+### Buildifier
+
+`buildifier` is a tool for formatting bazel BUILD and .bzl files with a standard convention. It can be fetched, built and run on all files directly from this workspace:
+
+```sh
+bazel run //:buildifier
+```
 
 ### Test coverage report
 
