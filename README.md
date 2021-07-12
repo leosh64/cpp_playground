@@ -13,7 +13,7 @@ bazel build //...
 ```
 
 ```sh
-bazel run //compiletime:main
+bazel run //apps/compiletime_polynomial:main
 ```
 
 ```sh
