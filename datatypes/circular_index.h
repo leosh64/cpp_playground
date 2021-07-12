@@ -1,6 +1,8 @@
 #include <array>
 #include <cstddef>
 
+#ifndef DATATYPES_CIRCULAR_INDEX_H
+#define DATATYPES_CIRCULAR_INDEX_H
 template <std::size_t limit_>
 class CircularIndex
 {
@@ -112,3 +114,5 @@ private:
 
     internal_type value_;
 };
+
+#endif // DATATYPES_CIRCULAR_INDEX_H

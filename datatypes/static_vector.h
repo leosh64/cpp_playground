@@ -4,6 +4,9 @@
 #include <exception>
 #include <initializer_list>
 
+#ifndef DATATYPES_STATIC_VECTOR_H
+#define DATATYPES_STATIC_VECTOR_H
+
 template <typename T, std::size_t capacity_>
 class StaticVector
 {
@@ -111,3 +114,5 @@ private:
     std::array<T, capacity_> data_;
     std::size_t size_;
 };
+
+#endif // DATATYPES_STATIC_VECTOR_H
