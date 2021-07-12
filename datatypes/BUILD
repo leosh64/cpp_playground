@@ -34,6 +34,7 @@ cc_test(
 cc_library(
     name = "static_vector",
     hdrs = ["static_vector.h"],
+    visibility = ["//apps:__subpackages__"],
 )
 
 cc_test(
@@ -41,6 +42,23 @@ cc_test(
     srcs = ["static_vector_test.cpp"],
     deps = [
         ":static_vector",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)
+
+
+cc_library(
+    name = "polynomial",
+    hdrs = ["polynomial.h"],
+    visibility = ["//apps:__subpackages__"],
+)
+
+cc_test(
+    name = "polynomial_test",
+    srcs = ["polynomial_test.cpp"],
+    deps = [
+        ":polynomial",
         "@gtest",
         "@gtest//:gtest_main",
     ],
