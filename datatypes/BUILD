@@ -30,3 +30,18 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "static_vector",
+    hdrs = ["static_vector.h"],
+)
+
+cc_test(
+    name = "static_vector_test",
+    srcs = ["static_vector_test.cpp"],
+    deps = [
+        ":static_vector",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+)

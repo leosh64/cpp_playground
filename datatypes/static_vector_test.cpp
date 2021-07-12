@@ -1,4 +1,4 @@
-#include "static_vector.h"
+#include "datatypes/static_vector.h"
 #include "gtest/gtest.h"
 
 #include <string>
@@ -6,8 +6,8 @@
 
 TEST(StaticVectorTest, WhenUsingDefaultConstructor_SizeAndCapacityAreCorrect)
 {
-    const std::size_t cap = 10;
-    const StaticVector<int, cap> vec;
+    constexpr std::size_t cap = 10;
+    constexpr StaticVector<int, cap> vec;
 
     EXPECT_EQ(vec.size(), 0);
     EXPECT_EQ(vec.capacity(), cap);
