@@ -2,16 +2,17 @@
 
 This is a small C++ project to compare the performance of partial sorting of data using STL algorithms. Imagine the requirement to get the top `x` percent of elements in a collection `v` in sorted order. There are a few ways to do so:
 
-Set
+1. sort the entire container with `sort(begin, end)` and then use elements from `begin` to `partition`
+2. partially sort the container with `partial_sort(begin, partition, end)`
+3. partition the container with `nth_element(begin, partition, end)` and then `sort(begin, partition)`
+
+where
+
 ```
 begin = begin(v)
 end = end(v)
 partition = begin + x * v.size()
 ```
-
-1. sort the entire container with `sort(begin, end)` and then use elements from `begin` to `partition`
-2. partially sort the container with ``partial_sort(begin, partition, end)`
-3. partition the container with `nth_element(begin, partition, end)` and then `sort(begin, partition)`
 
 Which one is fastest? The answer might not be so obvious.
 
