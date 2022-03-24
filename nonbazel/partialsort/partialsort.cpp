@@ -1,11 +1,11 @@
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 #include <cstdint>
 #include <iostream>
 #include <limits>
 #include <random>
 #include <vector>
-#include <cmath>
 
 /**
  * @brief Get vector with random data
@@ -52,15 +52,15 @@ double time_it(Fcn f)
 
 /**
  * @brief Run benchmark for given type and size
- * 
+ *
  * @tparam ElementType type of the elements to be sorted
  * @param buffer_size number of elements
  */
 template <class ElementType>
 void run(std::size_t buffer_size)
 {
-    std::cerr << "Requiring " << static_cast<double>(sizeof(ElementType) * buffer_size) / 1024. / 1024.
-              << " MB for " << buffer_size << " elements of type " << typeid(ElementType).name() << std::endl;
+    std::cerr << "Requiring " << static_cast<double>(sizeof(ElementType) * buffer_size) / 1024. / 1024. << " MB for "
+              << buffer_size << " elements of type " << typeid(ElementType).name() << std::endl;
 
     const double fraction{0.1};
     double duration_sort;
@@ -113,19 +113,19 @@ int main(int argc, const char* argv[])
     }
 
     // Unfortunately cannot switch on string in C++
-    if(datatype == "int8")
+    if (datatype == "int8")
     {
         run<std::int8_t>(buffer_size);
     }
-    if(datatype == "int16")
+    if (datatype == "int16")
     {
         run<std::int16_t>(buffer_size);
     }
-    else if(datatype == "int32")
+    else if (datatype == "int32")
     {
         run<std::int32_t>(buffer_size);
     }
-    else if(datatype == "int64")
+    else if (datatype == "int64")
     {
         run<std::int64_t>(buffer_size);
     }

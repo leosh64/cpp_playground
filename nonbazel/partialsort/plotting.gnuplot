@@ -10,6 +10,6 @@ set title "Comparing Partial Sorting"
 set xlabel "size"
 set ylabel "runtime (ms)"
 
-plot for [n=2:4] "results.txt" u 1:(column(n)) w lines title columnhead(n)
+plot for [n=2:4] "results.txt" u 1:(column(n)) w lines lw 2 title columnhead(n)
 
 
