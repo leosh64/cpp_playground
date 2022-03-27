@@ -25,8 +25,8 @@ results.txt: benchmark
 	./benchmark 1600000000 | tee -a results.txt
 	# ./benchmark 3200000000 | tee -a results.txt # enable if you have enough memory
 
-benchmark:
-	$(CXX) -O3 partialsort.cpp -o benchmark
+benchmark: partialsort.cpp ../../utils/timeit.h
+	$(CXX) -std=c++17 -O3 partialsort.cpp -o benchmark
 
 clean:
 	rm -f benchmark results.txt plot.png
