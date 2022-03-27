@@ -8,7 +8,7 @@ This is a small C++ project to compare the performance of partial sorting of dat
 
 where
 
-```
+```cpp
 begin = begin(v)
 end = end(v)
 partition = begin + x * v.size()
@@ -19,7 +19,8 @@ Which one is fastest? The answer might not be so obvious.
 ## Requirements
 
 The following software components are required to run this project:
-```
+
+```sh
 g++     # (or any other C++ compiler)
 make
 tee
